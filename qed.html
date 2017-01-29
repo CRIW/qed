@@ -2,52 +2,25 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="qed.css">
+<link rel="stylesheet" href="prototypes.css">
 </head>
 <body>
 <div id="header">
 <button onclick="rescan();">rescan</button><button onclick="showLog();">show log</button><span id="rescan-status-container">Rescan Active: <span id="rescan-status"></span></span>
 </div>
-<div id="items">
-
-</div>
+<div id="items"></div>
 <div id="searchbox">
 <input type="text" id="searchinput"></input>
 <div id="results"></div>
   <div id="results-wrapper"></div>
 </div>
+<script src="prototypes.js"></script>
 <script src="qed.js"></script>
 <script>
+  var soundsystem = new SoundSystem(document.getElementById('items'));
+
   function add(item){
-    console.log(item);
-    var itemContainer = document.createElement('div');
-    itemContainer.classList.add('player-container');
-
-    var remover = document.createElement('button');
-    remover.innerText = "remove";
-    remover.addEventListener('click', function(){
-      itemContainer.remove();
-    });
-    itemContainer.appendChild(remover);
-
-    var descriptor = document.createElement('span');
-    var desc = "";
-    if(item.artists.length > 0){
-      desc = item.artists.join(", ") + " - ";
-    }
-    if(item.album != null){
-      desc = desc + item.album + " - ";
-    }
-    desc = desc + item.title;
-    descriptor.innerText = desc;
-    itemContainer.appendChild(descriptor);
-
-    var audio = document.createElement('audio');
-    audio.src = "http://localhost:1234/file/" + item.songid;
-    audio.preload = "metadata";
-    audio.controls = "controls";
-    itemContainer.appendChild(audio);
-
-    document.getElementById('items').append(itemContainer);
+    soundsystem.queueSong(item);
   }
 
   function search(term){
